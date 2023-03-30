@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name_sport: MyString
+  capacity_sport: 1
+  price_sport: 9.99
+  description_sport: MyString
+  starting_date_sport: 2023-03-29
+  ending_date_sport: 2023-03-29
+
+two:
+  name_sport: MyString
+  capacity_sport: 1
+  price_sport: 9.99
+  description_sport: MyString
+  starting_date_sport: 2023-03-29
+  ending_date_sport: 2023-03-29
