@@ -53,11 +53,7 @@ function Spa() {
 
     fetchDataAdmin();
   }, []);
-  const navigate = useNavigate();
 
-  const add = (obj) => {
-    addCartSpa(obj);
-  };
   return (
     <>
       <Grid container spacing={2}>

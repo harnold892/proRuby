@@ -18,7 +18,7 @@ function Cart() {
   const { cartSpa, cartSport, cartNocenje, deleteCart } =
     useContext(CartContext);
   const { currentUser } = useContext(AuthContext);
-  const [cijena, setCijena] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [notif, setNotif] = useState();
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -50,33 +50,33 @@ function Cart() {
       num += sp.CIJENA_SPORT;
     });
     cartNocenje.map((sp) => {
-      let start = sp.DATUM_DOLASKA;
-      let end = sp.DATUM_ODLASKA;
-
+      let start = sp.check_in_date;
+      let end = sp.check_out_date;
+      let po_danu = parseFloat(sp.price_room);
       days = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
       while (days > -1) {
-        num += sp.CIJENA_KM_SOBA;
+        num += po_danu;
         days--;
       }
     });
-    setCijena(num.toFixed(2));
+    setTotalPrice(num.toFixed(2));
   }, [cartSpa, cartNocenje, cartSport]);
   const handleClick = async () => {
     const mail = {
-      to: currentUser.EMAIL_KOR,
+      to: currentUser.user.email,
       datum: new Date(),
-      cijena_r: cijena,
+      cijena_r: totalPrice,
       nocenja: [],
       sport: [],
       spa: [],
     };
     try {
       let racun = {
-        id_kor: currentUser.ID_KOR,
-        datum: new Date(),
-        cijena_rac: cijena,
+        user_id: currentUser.user.id,
+        date_receipt: new Date(),
+        total_sum: totalPrice,
       };
-      await Axios.post("/cart/racun", racun);
+      await Axios.post("receipt/new", racun);
     } catch (err) {
       console.log(err);
     }
@@ -98,19 +98,13 @@ function Cart() {
     }
     if (cartNocenje.length > 0) {
       try {
-        await Axios.post("/cart/nocenje", cartNocenje);
+        await Axios.post("receipt/rooms", cartNocenje);
       } catch (err) {
         console.log(err);
       }
       mail.nocenja = cartNocenje;
     }
     deleteCart();
-    console.log(mail);
-    try {
-      await Axios.post("/mail", mail);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return (
@@ -259,9 +253,6 @@ function Cart() {
                   <StyledTableCell align="right">Datum dolaska</StyledTableCell>
                   <StyledTableCell align="right">Datum odlaska</StyledTableCell>
                   <StyledTableCell align="right">
-                    Cijena&nbsp;(€)
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
                     Cijena&nbsp;(KM)
                   </StyledTableCell>
                 </TableRow>
@@ -270,35 +261,32 @@ function Cart() {
                 {cartNocenje.map((noc) => (
                   <StyledTableRow key={i++}>
                     <StyledTableCell component="th" scope="row">
-                      <Typography>{noc.ID_SOBA}</Typography>
+                      <Typography>{noc.id}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      {noc.JEL_APARTMAN ? (
+                      {noc.is_apartment ? (
                         <Typography>Da</Typography>
                       ) : (
                         <Typography>Ne</Typography>
                       )}
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      <Typography> {noc.KAPACITET_SOBA}</Typography>
+                      <Typography> {noc.capacity_room}</Typography>
                     </StyledTableCell>
 
                     <StyledTableCell align="right">
                       <Typography>
                         {" "}
-                        {moment(noc.DATUM_DOLASKA).format("DD/MM/YYYY")}{" "}
+                        {moment(noc.check_in_date).format("DD/MM/YYYY")}{" "}
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       <Typography>
-                        {moment(noc.DATUM_ODLASKA).format("DD/MM/YYYY")}{" "}
+                        {moment(noc.check_out_date).format("DD/MM/YYYY")}{" "}
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      <Typography>{noc.CIJENA_E_SOBA}</Typography>
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Typography>{noc.CIJENA_KM_SOBA}</Typography>
+                      <Typography>{noc.price_room}</Typography>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
@@ -321,7 +309,7 @@ function Cart() {
                 float: "right",
               }}
             >
-              {cijena} KM
+              {totalPrice} KM
             </Typography>
           </Grid>
           <Grid item xs={6}>

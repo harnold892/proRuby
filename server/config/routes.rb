@@ -15,6 +15,11 @@ Rails.application.routes.draw do
   get "room/admin", to: "room#admin"
 
   post "login", to: "auth#login"
+
+  post "receipt/new", to: "receipt#new"
+  post "receipt/rooms", to: "receipt#rooms"
+  #OVA DOLE JOS NIJE GOTOVA!!!
+  get "reservation/available/:check_in_date/:check_out_date", to: "reservation#available"
  
   root to: "static#home"
 end

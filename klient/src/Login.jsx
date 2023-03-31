@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import Axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -19,7 +18,7 @@ function App() {
   });
   const [err, setError] = useState(null);
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login, currentUser } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -28,13 +27,18 @@ function App() {
     e.preventDefault();
     try {
       await login(inputs);
-
-      navigate("/");
     } catch (err) {
       setError(err.response.data);
     }
   };
-
+  useEffect(() => {
+    if (currentUser?.user.isadmin === true) {
+      navigate("/");
+    }
+    if (currentUser?.user.isadmin === false) {
+      navigate("/reservation");
+    }
+  }, [currentUser]);
   return (
     <>
       <Container maxWidth="sm">
@@ -80,8 +84,11 @@ function App() {
 
                 <Grid item>{err && <Alert severity="error">{err}</Alert>}</Grid>
                 <Grid item>
-                  <Typography> Ako nemate account kliknite <Link to="/register"> Ovdje</Link></Typography>
-                  
+                  <Typography>
+                    {" "}
+                    Ako nemate account kliknite{" "}
+                    <Link to="/register"> Ovdje</Link>
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Button variant="contained" onClick={handleSubmit} fullWidth>

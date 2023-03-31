@@ -1,5 +1,6 @@
 import { createContext, useEffect } from "react";
 import { useState } from "react";
+
 import Axios from "axios";
 
 export const AuthContext = createContext();
@@ -14,7 +15,6 @@ export const AuthContextProvider = ({ children }) => {
     setCurrentUser(res.data);
   };
   const logout = async (inputs) => {
-    
     setCurrentUser(null);
   };
   useEffect(() => {

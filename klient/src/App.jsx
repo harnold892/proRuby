@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Axios from "axios";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import Register from "./Register";
 import Home from "./Home";
@@ -7,7 +5,7 @@ import Login from "./Login";
 import Spa from "./Spa";
 import Navbar from "./Navbar";
 import { Box } from "@mui/system";
-import Nocenja from "./Nocenja";
+
 import Sport from "./Sport";
 import AddSpa from "./AddSpa";
 import AddSport from "./Addsport";
@@ -17,6 +15,7 @@ import Cart from "./Cart";
 import AddHotel from "./AddHotel";
 import Room from "./Room";
 import AddRoom from "./AddRoom";
+import ReservationMenu from "./ReservationMenu";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -83,6 +82,15 @@ const router = createBrowserRouter([
       <Box sx={{ width: "100%", margin: "0" }}>
         <Navbar />
         <Hotel />
+      </Box>
+    ),
+  },
+  {
+    path: "/reservation",
+    element: (
+      <Box sx={{ width: "100%", margin: "0" }}>
+        <Navbar />
+        <ReservationMenu />
       </Box>
     ),
   },

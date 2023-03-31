@@ -4,7 +4,6 @@ import { AuthContext } from "./authContext";
 import { useContext } from "react";
 import slika from "./img/Night_hotel.jpg";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import styles from "./css/picture.css";
 function App() {
   const { currentUser, logout, login } = useContext(AuthContext);

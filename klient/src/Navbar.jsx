@@ -18,7 +18,7 @@ function ResponsiveAppBar() {
   React.useEffect(() => {
     if (currentUser) {
       if (currentUser.user.isadmin === false) {
-        setPages(["nocenje", "sportske aktivnosti", "spa aktivnosti", "racun"]);
+        setPages(["rezervacije", "racun"]);
       } else {
         setPages([
           "hoteli",
@@ -36,6 +36,9 @@ function ResponsiveAppBar() {
   const handleClick = (naziv) => {
     if (naziv === "hoteli") {
       navigate("/hotel");
+    }
+    if (naziv === "rezervacije") {
+      navigate("/reservation");
     }
     if (naziv === "sportske aktivnosti") {
       navigate("/sportske-aktivnosti");
