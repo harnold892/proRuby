@@ -44,10 +44,12 @@ function Cart() {
     let num = 0;
     let days = 0;
     cartSpa.map((sp) => {
-      num += sp.CIJENA_SPA;
+      let spa_price = parseFloat(sp.price_spa);
+      num += spa_price;
     });
     cartSport.map((sp) => {
-      num += sp.CIJENA_SPORT;
+      let sport_price = parseFloat(sp.price_sport);
+      num += sport_price;
     });
     cartNocenje.map((sp) => {
       let start = sp.check_in_date;
@@ -82,7 +84,7 @@ function Cart() {
     }
     if (cartSpa.length > 0) {
       try {
-        await Axios.post("/cart/spa", cartSpa);
+        await Axios.post("receipt/spa", cartSpa);
       } catch (err) {
         console.log(err);
       }
@@ -90,7 +92,7 @@ function Cart() {
     }
     if (cartSport.length > 0) {
       try {
-        await Axios.post("/cart/sport", cartSport);
+        await Axios.post("receipt/sport", cartSport);
       } catch (err) {
         console.log(err);
       }
@@ -149,12 +151,12 @@ function Cart() {
                 {cartSpa.map((spa) => (
                   <StyledTableRow key={i++}>
                     <StyledTableCell component="th" scope="row">
-                      <Typography> {spa.NAZIV_SPA}</Typography>
+                      <Typography> {spa.name_spa}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       <Typography>
                         {" "}
-                        {moment(spa.DATUM_POCETKA_SPA).format(
+                        {moment(spa.starting_date_spa).format(
                           "DD/MM/YYYY"
                         )}{" "}
                       </Typography>
@@ -162,13 +164,11 @@ function Cart() {
                     <StyledTableCell align="right">
                       <Typography>
                         {" "}
-                        {moment(spa.DATUM_ZAVRSETKA_SPA).format(
-                          "DD/MM/YYYY"
-                        )}{" "}
+                        {moment(spa.ending_date_spa).format("DD/MM/YYYY")}{" "}
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      <Typography> {spa.CIJENA_SPA}</Typography>
+                      <Typography> {spa.price_spa}</Typography>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
@@ -204,16 +204,16 @@ function Cart() {
                 {cartSport.map((sport) => (
                   <StyledTableRow key={i++}>
                     <StyledTableCell component="th" scope="row">
-                      <Typography>{sport.VRSTA_SPORT}</Typography>
+                      <Typography>{sport.name_sport}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      <Typography> {sport.KAPACITET_SPORT}</Typography>
+                      <Typography> {sport.capacity_sport}</Typography>
                     </StyledTableCell>
 
                     <StyledTableCell align="right">
                       <Typography>
                         {" "}
-                        {moment(sport.DATUM_POCETKA_SPORT).format(
+                        {moment(sport.starting_date_sport).format(
                           "DD/MM/YYYY"
                         )}{" "}
                       </Typography>
@@ -221,13 +221,13 @@ function Cart() {
                     <StyledTableCell align="right">
                       <Typography>
                         {" "}
-                        {moment(sport.DATUM_ZAVRSETKA_SPORT).format(
+                        {moment(sport.ending_date_sport).format(
                           "DD/MM/YYYY"
                         )}{" "}
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      <Typography>{sport.CIJENA_SPORT}</Typography>
+                      <Typography>{sport.price_sport}</Typography>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

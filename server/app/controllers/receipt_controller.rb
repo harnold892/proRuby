@@ -17,4 +17,22 @@ class ReceiptController < ApplicationController
             )
         end
     end
+    def sport
+        id_receipt=Receipt.maximum(:id)
+        for sp in params["_json"]
+            ReservationSport.create!(
+                sport_id: sp["id"],
+                receipt_id: id_receipt
+            )
+        end
+    end
+    def spa
+        id_receipt=Receipt.maximum(:id)
+        for sp in params["_json"]
+            ReservationSpa.create!(
+                spa_id: sp["id"],
+                receipt_id: id_receipt
+            )
+        end
+    end
 end

@@ -23,4 +23,15 @@ class ReservationController < ApplicationController
         available_rooms=Room.joins(:hotel).select("rooms.*, hotels.name_hotel").where("rooms.id IN (?)",av)
         render json: available_rooms.to_json
     end
+    def sport
+
+        hotel_sports=Sport.joins(:hotel).select("sports.*,hotels.name_hotel").where("hotels.id=?",params["hotel_id"])
+        av_s=[]
+        for sp in hotel_sports
+            if sp.starting_date_sport <= DateTime.parse(params["check_out_date"])  and sp.ending_date_sport>= DateTime.parse(params["check_in_date"])
+                av_s.append(sp)
+            end
+        end
+        render json: av_s.to_json
+    end
 end

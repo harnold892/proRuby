@@ -18,8 +18,11 @@ Rails.application.routes.draw do
 
   post "receipt/new", to: "receipt#new"
   post "receipt/rooms", to: "receipt#rooms"
-  #OVA DOLE JOS NIJE GOTOVA!!!
+  post "receipt/sport", to: "receipt#sport"
+  post "receipt/spa", to: "receipt#spa"
+
   get "reservation/available/:check_in_date/:check_out_date", to: "reservation#available"
- 
+  get "reservation/sport/:check_in_date/:check_out_date/:hotel_id", to: "reservation#sport"
+
   root to: "static#home"
 end
